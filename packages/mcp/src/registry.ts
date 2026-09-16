@@ -2,7 +2,9 @@ import { readFile } from "node:fs/promises"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-export const DEFAULT_REGISTRY_URL = "https://fujin.dev/r"
+import { DEFAULT_REGISTRY_URL } from "@fujin/schema"
+
+export { DEFAULT_REGISTRY_URL }
 
 export type CatalogEntry = {
   name: string

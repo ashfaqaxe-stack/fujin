@@ -4,6 +4,7 @@ import path from "node:path"
 
 import { execa } from "execa"
 import pc from "picocolors"
+import { DEFAULT_REGISTRY_URL, GITHUB_REPOSITORY } from "@fujin/schema"
 
 import {
   CliError,
@@ -24,7 +25,7 @@ import {
 export const TEMPLATES = ["next", "react"] as const
 export type Template = (typeof TEMPLATES)[number]
 
-const TEMPLATE_REPO = "gh:ashfaqaxe-stack/fujin/templates"
+const TEMPLATE_REPO = `gh:${GITHUB_REPOSITORY}/templates`
 
 /* -------------------------------------------------------------------------- */
 /* create                                                                     */
@@ -336,7 +337,7 @@ export async function mcpInit(cwd: string, client: McpClient) {
     command: "npx",
     args: ["-y", "@fujin/mcp@latest"],
   }
-  if (REGISTRY_URL !== "https://fujin.dev/r") {
+  if (REGISTRY_URL !== DEFAULT_REGISTRY_URL) {
     server.env = { FUJIN_REGISTRY_URL: REGISTRY_URL }
   }
   if (client === "vscode") server.type = "stdio"

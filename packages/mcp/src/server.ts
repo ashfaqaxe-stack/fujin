@@ -13,7 +13,8 @@ import {
 import { normalizeName, NotFoundError, RegistryClient } from "./registry"
 import { closestNames, searchCatalog } from "./search"
 
-const VERSION = "0.1.0"
+// Injected from package.json at build time (tsdown.config.ts).
+const VERSION = __FUJIN_VERSION__
 
 const text = (value: string) => ({
   content: [{ type: "text" as const, text: value }],

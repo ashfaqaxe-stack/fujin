@@ -1,4 +1,8 @@
-import type { RegistryInput, RegistryItemInput } from "@fujin/schema"
+import {
+  SITE_URL,
+  type RegistryInput,
+  type RegistryItemInput,
+} from "@fujin/schema"
 
 import { examples } from "./fujin/examples/_registry"
 import { lib } from "./fujin/lib/_registry"
@@ -58,6 +62,6 @@ const theme: RegistryItemInput = {
 
 export const registry = {
   name: "fujin",
-  homepage: "https://fujin.dev",
+  homepage: process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL,
   items: [theme, ...lib, ...ui, ...examples],
 } satisfies RegistryInput

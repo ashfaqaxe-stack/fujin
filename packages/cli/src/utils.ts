@@ -4,12 +4,13 @@ import path from "node:path"
 
 import { execa } from "execa"
 import pc from "picocolors"
+import { DEFAULT_REGISTRY_URL, REGISTRY_NAMESPACE } from "@fujin/schema"
 
 export const REGISTRY_URL = (
-  process.env.FUJIN_REGISTRY_URL ?? "https://fujin.dev/r"
+  process.env.FUJIN_REGISTRY_URL ?? DEFAULT_REGISTRY_URL
 ).replace(/\/+$/, "")
 
-export const NAMESPACE = "@fujin"
+export const NAMESPACE = REGISTRY_NAMESPACE
 
 export const logger = {
   info: (message: string) => console.log(message),

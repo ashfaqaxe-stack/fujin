@@ -34,6 +34,9 @@ export async function GET(
   })
 }
 
+// Every docs page is known at build time; anything else is a 404.
+export const dynamicParams = false
+
 export function generateStaticParams() {
   return source.generateParams()
 }

@@ -40,6 +40,9 @@ export default async function Page(props: {
   )
 }
 
+// Every docs page is known at build time; anything else is a 404.
+export const dynamicParams = false
+
 export function generateStaticParams() {
   return source.generateParams()
 }

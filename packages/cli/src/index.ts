@@ -16,7 +16,8 @@ import {
 } from "./commands"
 import { CliError, logger } from "./utils"
 
-const VERSION = "0.1.0"
+// Injected from package.json at build time (tsdown.config.ts).
+const VERSION = __FUJIN_VERSION__
 
 const program = new Command()
   .name("fujin")

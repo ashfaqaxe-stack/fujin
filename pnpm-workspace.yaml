@@ -3,6 +3,9 @@ packages:
   - "packages/*"
   - "templates/*"
 
+linkWorkspacePackages: true
+saveWorkspaceProtocol: rolling
+
 allowBuilds:
   "@tailwindcss/oxide": true
   esbuild: true

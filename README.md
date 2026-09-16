@@ -44,6 +44,8 @@ pnpm typecheck
 pnpm lint
 pnpm templates:sync         # reinstall registry items into both templates (needs the dev server)
 pnpm --filter @fujin/mcp smoke   # drive the MCP server with a real client
+pnpm configure --site <url> --scope <@scope>   # use your own domain / npm scope
+pnpm release:dry            # preview an npm release
 ```
 
 Point the CLI or MCP server at a local registry with
@@ -78,10 +80,8 @@ For the MCP server before it is published, point your editor at the local
 build: `"command": "node", "args": ["/path/to/fujin/packages/mcp/dist/bin.mjs"]`
 with the same `FUJIN_REGISTRY_URL` in `env`.
 
-To go live: deploy `apps/www` (e.g. Vercel, root directory `apps/www`), set
-its URL as the default in `packages/cli/src/utils.ts` and
-`packages/mcp/src/registry.ts`, then publish `@fujin/schema`, `@fujin/mcp`
-and `@fujin/cli` with changesets.
+To go live, follow [docs/releasing.md](docs/releasing.md): deploy `apps/www`
+(Vercel or Docker), then publish the npm packages.
 
 ### Adding a component
 
