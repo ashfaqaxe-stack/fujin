@@ -2,6 +2,11 @@
   "name": "@fujin/schema",
   "version": "0.1.0",
   "description": "Registry and MCP metadata schemas shared by the Fujin CLI, MCP server and registry build.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashfaqaxe-stack/fujin.git",
+    "directory": "packages/schema"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -26,10 +31,5 @@
   "devDependencies": {
     "tsdown": "^0.23.0",
     "typescript": "6.0.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ashfaqaxe-stack/fujin.git",
-    "directory": "packages/schema"
   }
 }

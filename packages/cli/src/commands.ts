@@ -123,11 +123,63 @@ export async function init(cwd: string, options: { yes: boolean }) {
   logger.step("Installing theme tokens and utilities")
   await runShadcn(cwd, ["add", "@fujin/theme", "@fujin/utils", "--yes"])
 
+  if (await repairFontVariable(cwd)) {
+    logger.success("Fixed a self-referencing --font-sans in your CSS")
+  }
+
   logger.success("Fujin is ready.")
   logger.info(`
   ${pc.dim("Add components:")}  npx @fujin/cli add button field
   ${pc.dim("Agent setup:")}     npx @fujin/cli mcp init
 `)
+}
+
+const SELF_REFERENCING_FONT = /--font-sans:\s*var\(--font-sans\)\s*;/
+
+/**
+ * `shadcn init` writes `--font-sans: var(--font-sans)` into the stylesheet and
+ * expects the root layout to define `--font-sans` via next/font. When it
+ * leaves an existing layout alone (e.g. create-next-app's, which defines
+ * `--font-geist-sans`), the variable resolves to nothing and text falls back
+ * to the browser's serif font. Point it at a font that actually exists.
+ */
+async function repairFontVariable(cwd: string) {
+  const cssFile = (await readComponentsJson(cwd))?.tailwind
+  const cssPath =
+    typeof cssFile === "object" && cssFile && "css" in cssFile
+      ? path.join(cwd, String(cssFile.css))
+      : null
+  if (!cssPath || !existsSync(cssPath)) return false
+
+  const css = await readFile(cssPath, "utf8")
+  if (!SELF_REFERENCING_FONT.test(css)) return false
+
+  const layouts = [
+    "app/layout.tsx",
+    "src/app/layout.tsx",
+    "app/layout.jsx",
+    "src/app/layout.jsx",
+  ]
+    .map((file) => path.join(cwd, file))
+    .filter((file) => existsSync(file))
+  const layoutSource = (
+    await Promise.all(layouts.map((file) => readFile(file, "utf8")))
+  ).join("\n")
+
+  // The layout provides --font-sans itself: nothing to fix.
+  if (/["']--font-sans["']/.test(layoutSource)) return false
+
+  const fallback = "ui-sans-serif, system-ui, sans-serif"
+  const replacement = layoutSource.includes("--font-geist-sans")
+    ? `var(--font-geist-sans), ${fallback}`
+    : fallback
+
+  await writeFile(
+    cssPath,
+    css.replace(SELF_REFERENCING_FONT, `--font-sans: ${replacement};`),
+    "utf8"
+  )
+  return true
 }
 
 /* -------------------------------------------------------------------------- */

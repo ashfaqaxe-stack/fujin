@@ -49,6 +49,40 @@ pnpm --filter @fujin/mcp smoke   # drive the MCP server with a real client
 Point the CLI or MCP server at a local registry with
 `FUJIN_REGISTRY_URL=http://localhost:4100/r`.
 
+### Trying it in another project before publishing
+
+The registry is not hosted and the packages are not on npm yet, so use the
+local build:
+
+```bash
+# 1. In this repo: build and serve the registry
+pnpm install && pnpm build
+pnpm --filter www start                     # http://localhost:4100
+
+# 2. Anywhere else (macOS/Linux shell shown)
+export FUJIN_REGISTRY_URL=http://localhost:4100/r
+FUJIN=/path/to/fujin/packages/cli/dist/index.mjs
+
+# New app from the GitHub template
+node $FUJIN create my-app --template next    # or --template react
+
+# Or an existing Next.js / Vite app with Tailwind v4
+node $FUJIN init --yes
+node $FUJIN add button field input
+node $FUJIN mcp init                        # needs @fujin/mcp published, see below
+```
+
+On Windows PowerShell use `$env:FUJIN_REGISTRY_URL = "http://localhost:4100/r"`.
+
+For the MCP server before it is published, point your editor at the local
+build: `"command": "node", "args": ["/path/to/fujin/packages/mcp/dist/bin.mjs"]`
+with the same `FUJIN_REGISTRY_URL` in `env`.
+
+To go live: deploy `apps/www` (e.g. Vercel, root directory `apps/www`), set
+its URL as the default in `packages/cli/src/utils.ts` and
+`packages/mcp/src/registry.ts`, then publish `@fujin/schema`, `@fujin/mcp`
+and `@fujin/cli` with changesets.
+
 ### Adding a component
 
 1. Write it in `apps/www/registry/fujin/<tier>/`.
