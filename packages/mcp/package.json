@@ -1,0 +1,42 @@
+{
+  "name": "@fujin/mcp",
+  "version": "0.1.0",
+  "description": "Token-efficient MCP server for the Fujin component registry.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "bin": {
+    "fujin-mcp": "./dist/bin.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "smoke": "tsx ./scripts/smoke.ts",
+    "start": "node ./dist/bin.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fujin/schema": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsdown": "^0.23.0",
+    "tsx": "^4.20.6",
+    "typescript": "6.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashfaqaxe-stack/fujin.git",
+    "directory": "packages/mcp"
+  }
+}
