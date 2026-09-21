@@ -184,12 +184,19 @@ menubar, tabs, accordion, collapsible, scroll-area, progress, meter, toast
 (Base UI), breadcrumb, pagination (with page-window logic), empty-state.
 Also: a shared overlay-stack test matrix (dialog-in-dropdown, combobox-in-dialog, and so on).
 
-**Phase 2: data.** `data-table` as the flagship: TanStack Table v9, headless
-`useDataTable`, sorting (multi), global search, faceted and advanced filters,
-pagination (client and server), column visibility/pinning/resizing/ordering,
-row selection with bulk actions, expandable rows, virtualization, CSV export,
-URL state (nuqs), loading/empty/error states, sticky header with
-focus-not-obscured handling, and a server-component variant for Next.js.
+**Phase 2: data.** `data-table` as the flagship. Full spec, decisions and
+build order in `docs/data-table-plan.md`. Summary: TanStack Table v9,
+headless `useDataTable` (server-driven by default, client-mode escape
+hatch), multi-sort, a Shopify-style search bar (combobox that turns picked
+columns into pills) unified with GitHub-style per-column header filters,
+row selection with a cross-page "select all N" descriptor driving bulk
+actions and CSV export, URL state via `nuqs`, and a header/action-bar that
+sticks to the viewport (not just the table's scroll container). Column
+pinning/resizing/reordering/grouping, saved views and virtualization-by-
+default are explicitly deferred past v1. Needs 9 new primitives first
+(`table`, `checkbox`, `popover`, `command`, `dropdown-menu`, `badge`,
+`tooltip`, `separator`, `skeleton`) since only `spinner`/`button`/`input`/
+`field` exist today.
 
 **Phase 3: forms.** `form` (react-hook-form + zod, `Controller` wiring to
 Field), form-array, multi-step form/stepper that keeps state, combobox-async
