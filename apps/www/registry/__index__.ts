@@ -13,4 +13,44 @@ export const Index: Record<
     name: "field-demo",
     component: React.lazy(() => import("@/registry/fujin/examples/field-demo")),
   },
+  "table-demo": {
+    name: "table-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/table-demo")),
+  },
+  "checkbox-demo": {
+    name: "checkbox-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/checkbox-demo")),
+  },
+  "separator-demo": {
+    name: "separator-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/separator-demo")),
+  },
+  "skeleton-demo": {
+    name: "skeleton-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/skeleton-demo")),
+  },
+  "badge-demo": {
+    name: "badge-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/badge-demo")),
+  },
+  "popover-demo": {
+    name: "popover-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/popover-demo")),
+  },
+  "tooltip-demo": {
+    name: "tooltip-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/tooltip-demo")),
+  },
+  "dropdown-menu-demo": {
+    name: "dropdown-menu-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/dropdown-menu-demo")),
+  },
+  "command-demo": {
+    name: "command-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/command-demo")),
+  },
+  "data-table-demo": {
+    name: "data-table-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/data-table-demo")),
+  },
 }
