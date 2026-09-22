@@ -21,11 +21,41 @@ type Invoice = {
 }
 
 const invoices: Invoice[] = [
-  { id: "INV-001", title: "Website redesign", status: "paid", customer: "Acme Co", amount: 2400 },
-  { id: "INV-002", title: "Onboarding flow", status: "pending", customer: "Globex", amount: 1200 },
-  { id: "INV-003", title: "Q3 security audit", status: "overdue", customer: "Initech", amount: 3600 },
-  { id: "INV-004", title: "Brand refresh", status: "paid", customer: "Acme Co", amount: 900 },
-  { id: "INV-005", title: "Support retainer", status: "pending", customer: "Umbrella Corp", amount: 500 },
+  {
+    id: "INV-001",
+    title: "Website redesign",
+    status: "paid",
+    customer: "Acme Co",
+    amount: 2400,
+  },
+  {
+    id: "INV-002",
+    title: "Onboarding flow",
+    status: "pending",
+    customer: "Globex",
+    amount: 1200,
+  },
+  {
+    id: "INV-003",
+    title: "Q3 security audit",
+    status: "overdue",
+    customer: "Initech",
+    amount: 3600,
+  },
+  {
+    id: "INV-004",
+    title: "Brand refresh",
+    status: "paid",
+    customer: "Acme Co",
+    amount: 900,
+  },
+  {
+    id: "INV-005",
+    title: "Support retainer",
+    status: "pending",
+    customer: "Umbrella Corp",
+    amount: 500,
+  },
 ]
 
 const statusOptions: FilterOption[] = [
@@ -54,7 +84,9 @@ const columns: DataTableColumnDef<Invoice>[] = [
   {
     id: "title",
     accessorKey: "title",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Title" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Title" />
+    ),
     meta: { label: "Title", filter: { type: "text" } },
   },
   {
@@ -94,7 +126,9 @@ const columns: DataTableColumnDef<Invoice>[] = [
   {
     id: "amount",
     accessorKey: "amount",
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Amount" />
+    ),
     cell: ({ getValue }) => `$${(getValue() as number).toLocaleString()}`,
     meta: { label: "Amount" },
   },

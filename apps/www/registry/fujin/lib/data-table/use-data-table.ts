@@ -123,14 +123,14 @@ export function useDataTable<TData extends RowData>({
   if (process.env.NODE_ENV !== "production" && manual) {
     if (!getRowId) {
       console.warn(
-        "useDataTable: `getRowId` is required in `mode: \"server\"` - " +
+        'useDataTable: `getRowId` is required in `mode: "server"` - ' +
           "without it, row ids fall back to their index within the current " +
           "page, and cross-page selection will silently corrupt."
       )
     }
     if (rowCount == null) {
       console.warn(
-        "useDataTable: `rowCount` is required in `mode: \"server\"` - " +
+        'useDataTable: `rowCount` is required in `mode: "server"` - ' +
           "without it, the pagination footer will show 0 pages while rows " +
           "still render."
       )

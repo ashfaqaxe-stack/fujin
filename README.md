@@ -23,7 +23,7 @@ See [docs/plan.md](docs/plan.md) for the architecture, research and roadmap.
 | `apps/www/registry/fujin`           | Source of every component the registry ships        |
 | `packages/schema`                   | Registry and agent-metadata schemas                 |
 | `packages/mcp`                      | MCP server (`@fujin/mcp`)                           |
-| `packages/cli`                      | CLI (`fujin`)                                  |
+| `packages/cli`                      | CLI (`fujin`)                                       |
 | `templates/next`, `templates/react` | Starter apps                                        |
 
 ## Development

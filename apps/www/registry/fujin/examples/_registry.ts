@@ -29,7 +29,10 @@ export const examples: RegistryItemInput[] = [
     type: "registry:example",
     registryDependencies: ["table"],
     files: [
-      { path: "registry/fujin/examples/table-demo.tsx", type: "registry:example" },
+      {
+        path: "registry/fujin/examples/table-demo.tsx",
+        type: "registry:example",
+      },
     ],
   },
   {
@@ -70,7 +73,10 @@ export const examples: RegistryItemInput[] = [
     type: "registry:example",
     registryDependencies: ["badge"],
     files: [
-      { path: "registry/fujin/examples/badge-demo.tsx", type: "registry:example" },
+      {
+        path: "registry/fujin/examples/badge-demo.tsx",
+        type: "registry:example",
+      },
     ],
   },
   {

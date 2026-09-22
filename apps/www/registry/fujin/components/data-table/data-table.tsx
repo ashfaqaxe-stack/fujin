@@ -89,7 +89,11 @@ function DataTable<TData extends RowData>({
       className={cn("rounded-md border", className)}
       style={style}
     >
-      <DataTableToolbar table={table} onExport={onExport} exporting={exporting} />
+      <DataTableToolbar
+        table={table}
+        onExport={onExport}
+        exporting={exporting}
+      />
       <Table>
         <TableHeader sticky>
           {hasSelection ? (

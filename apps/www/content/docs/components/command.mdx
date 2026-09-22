@@ -33,7 +33,11 @@ import {
   <CommandPopup>
     <CommandEmpty>No framework found.</CommandEmpty>
     <CommandList>
-      {(framework) => <CommandItem key={framework.value} value={framework}>{framework.label}</CommandItem>}
+      {(framework) => (
+        <CommandItem key={framework.value} value={framework}>
+          {framework.label}
+        </CommandItem>
+      )}
     </CommandList>
   </CommandPopup>
 </Command>
@@ -62,7 +66,11 @@ children render whatever matched.
   </CommandChips>
   <CommandPopup>
     <CommandList>
-      {(status) => <CommandItem key={status.value} value={status}>{status.label}</CommandItem>}
+      {(status) => (
+        <CommandItem key={status.value} value={status}>
+          {status.label}
+        </CommandItem>
+      )}
     </CommandList>
   </CommandPopup>
 </Command>

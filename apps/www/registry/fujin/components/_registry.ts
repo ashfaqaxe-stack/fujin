@@ -204,7 +204,8 @@ const selection = useDataTableSelection({ pageRowIds, ...controlled? })
             name: "pageSizeOptions",
             type: "number[]",
             default: "[10, 20, 50, 100]",
-            description: "Choices in the pagination footer's rows-per-page menu.",
+            description:
+              "Choices in the pagination footer's rows-per-page menu.",
           },
         ],
         examples: [
@@ -242,14 +243,21 @@ const table = useDataTable({ data, columns, mode: "server", rowCount, getRowId: 
           "The search-bar combobox and a column's header popover write to the exact same `columnFilters` state - a pill and a header's filter icon for the same column always agree; there is nothing to keep in sync manually.",
           "In server mode, `manualSorting`/`manualFiltering`/`manualPagination` are set automatically - `data` must already be the sorted/filtered/paginated page your API returned, not the full dataset.",
           "`date-range` and `boolean` are valid `meta.filter.type` values (their `filterFn` is wired correctly) but have no built-in control yet - a column declaring one is skipped by the search bar and its header popover, and an already-active filter of that type renders as a plain, non-editable, removable pill. Stick to text/select/multi-select/number-range for v1, or drive `column.setFilterValue()` yourself for the other two.",
-          "`getRowId` and `rowCount` are optional in the types but effectively required in `mode: \"server\"` - without `getRowId`, row ids fall back to the row's index within the current page and cross-page selection silently corrupts across pages; without `rowCount`, the pagination footer shows 0 pages while rows still render. Both log a dev-mode warning when missing.",
+          '`getRowId` and `rowCount` are optional in the types but effectively required in `mode: "server"` - without `getRowId`, row ids fall back to the row\'s index within the current page and cross-page selection silently corrupts across pages; without `rowCount`, the pagination footer shows 0 pages while rows still render. Both log a dev-mode warning when missing.',
         ],
         a11y: [
           "Sortable headers are real buttons; `aria-sort` is set on the `<th>` itself by `DataTable`, not inside the custom header renderer.",
           "The sticky header combined with `stickyOffset` keeps `scroll-margin-top` in mind so a keyboard-focused cell is never hidden under it (WCAG 2.4.11).",
-          "Loading state announces via a visually-hidden `role=\"status\"` row so screen-reader users aren't left listening to silence.",
+          'Loading state announces via a visually-hidden `role="status"` row so screen-reader users aren\'t left listening to silence.',
         ],
-        related: ["table", "checkbox", "command", "dropdown-menu", "badge", "pagination"],
+        related: [
+          "table",
+          "checkbox",
+          "command",
+          "dropdown-menu",
+          "badge",
+          "pagination",
+        ],
         editing: {
           ui: ["components/data-table/*"],
           logic: ["lib/data-table/*"],

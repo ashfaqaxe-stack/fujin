@@ -100,7 +100,9 @@ export function useDataTableFilters<TData extends RowData>(
           label: String(value),
           count,
         }))
-        .filter((option) => option.label.toLowerCase().includes(normalizedQuery))
+        .filter((option) =>
+          option.label.toLowerCase().includes(normalizedQuery)
+        )
     },
     [table, manual]
   )

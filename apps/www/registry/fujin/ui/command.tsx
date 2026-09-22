@@ -19,8 +19,10 @@ import { cn } from "@/registry/fujin/lib/utils"
  * (click a button, then search the opened list).
  */
 
-type CommandProps<Value, Multiple extends boolean | undefined = false> =
-  ComboboxPrimitive.Root.Props<Value, Multiple>
+type CommandProps<
+  Value,
+  Multiple extends boolean | undefined = false,
+> = ComboboxPrimitive.Root.Props<Value, Multiple>
 
 function Command<Value, Multiple extends boolean | undefined = false>(
   props: CommandProps<Value, Multiple>
@@ -123,7 +125,7 @@ function CommandPopup({
         <ComboboxPrimitive.Popup
           data-slot="command-popup"
           className={cn(
-            "max-h-80 origin-[var(--transform-origin)] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+            "max-h-80 origin-[var(--transform-origin)] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0",
             className
           )}
           {...props}
@@ -141,7 +143,10 @@ function CommandList({ className, ...props }: CommandListProps) {
   return (
     <ComboboxPrimitive.List
       data-slot="command-list"
-      className={cn("max-h-80 overflow-y-auto overflow-x-hidden p-1", className)}
+      className={cn(
+        "max-h-80 overflow-x-hidden overflow-y-auto p-1",
+        className
+      )}
       {...props}
     />
   )
@@ -153,7 +158,10 @@ function CommandEmpty({ className, ...props }: CommandEmptyProps) {
   return (
     <ComboboxPrimitive.Empty
       data-slot="command-empty"
-      className={cn("py-6 text-center text-sm text-muted-foreground", className)}
+      className={cn(
+        "py-6 text-center text-sm text-muted-foreground",
+        className
+      )}
       {...props}
     />
   )
@@ -163,7 +171,12 @@ type CommandGroupProps = ComboboxPrimitive.Group.Props & {
   heading?: React.ReactNode
 }
 
-function CommandGroup({ className, heading, children, ...props }: CommandGroupProps) {
+function CommandGroup({
+  className,
+  heading,
+  children,
+  ...props
+}: CommandGroupProps) {
   return (
     <ComboboxPrimitive.Group
       data-slot="command-group"
@@ -188,12 +201,17 @@ type CommandItemProps = ComboboxPrimitive.Item.Props & {
   showIndicator?: boolean
 }
 
-function CommandItem({ className, children, showIndicator = true, ...props }: CommandItemProps) {
+function CommandItem({
+  className,
+  children,
+  showIndicator = true,
+  ...props
+}: CommandItemProps) {
   return (
     <ComboboxPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "relative flex min-h-8 cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+        "relative flex min-h-8 cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
         showIndicator && "pl-7",
         className
       )}
@@ -209,7 +227,10 @@ function CommandItem({ className, children, showIndicator = true, ...props }: Co
   )
 }
 
-function CommandSeparator({ className, ...props }: ComboboxPrimitive.Separator.Props) {
+function CommandSeparator({
+  className,
+  ...props
+}: ComboboxPrimitive.Separator.Props) {
   return (
     <ComboboxPrimitive.Separator
       data-slot="command-separator"

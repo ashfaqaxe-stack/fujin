@@ -76,7 +76,12 @@ function DataTableToolbar<TData extends RowData>({
       </div>
       <DataTableColumnVisibilityMenu table={table} />
       {onExport ? (
-        <Button variant="outline" size="sm" loading={exporting} onClick={onExport}>
+        <Button
+          variant="outline"
+          size="sm"
+          loading={exporting}
+          onClick={onExport}
+        >
           <DownloadIcon />
           Export
         </Button>

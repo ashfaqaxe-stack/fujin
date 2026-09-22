@@ -28,7 +28,13 @@ import {
 ```tsx
 <TooltipProvider>
   <Tooltip>
-    <TooltipTrigger render={<Button variant="ghost" size="icon" aria-label="Delete"><TrashIcon /></Button>} />
+    <TooltipTrigger
+      render={
+        <Button variant="ghost" size="icon" aria-label="Delete">
+          <TrashIcon />
+        </Button>
+      }
+    />
     <TooltipContent>Delete</TooltipContent>
   </Tooltip>
 </TooltipProvider>

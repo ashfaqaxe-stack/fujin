@@ -19,17 +19,27 @@ export default function DropdownMenuDemo() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline">Columns</Button>} />
+      <DropdownMenuTrigger
+        render={<Button variant="outline">Columns</Button>}
+      />
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-        <DropdownMenuCheckboxItem checked={showEmail} onCheckedChange={setShowEmail}>
+        <DropdownMenuCheckboxItem
+          checked={showEmail}
+          onCheckedChange={setShowEmail}
+        >
           Email
         </DropdownMenuCheckboxItem>
-        <DropdownMenuCheckboxItem checked={showStatus} onCheckedChange={setShowStatus}>
+        <DropdownMenuCheckboxItem
+          checked={showStatus}
+          onCheckedChange={setShowStatus}
+        >
           Status
         </DropdownMenuCheckboxItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">Reset to default</DropdownMenuItem>
+        <DropdownMenuItem variant="destructive">
+          Reset to default
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

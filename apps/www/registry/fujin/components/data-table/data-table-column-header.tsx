@@ -58,8 +58,8 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
   const filterConfig = column.columnDef.meta?.filter
   const canFilter = Boolean(
     filterConfig &&
-      getColumnOptions &&
-      FILTER_TYPES_WITH_UI.has(filterConfig.type)
+    getColumnOptions &&
+    FILTER_TYPES_WITH_UI.has(filterConfig.type)
   )
   const isListType =
     filterConfig?.type === "select" || filterConfig?.type === "multi-select"
@@ -70,7 +70,8 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
     getColumnOptions ?? (async () => [])
   )
 
-  const filterValue = column.getFilterValue() as ActiveFilter["value"] | undefined
+  const filterValue = column.getFilterValue() as
+    ActiveFilter["value"] | undefined
   const hasActiveFilter =
     filterValue != null &&
     (!Array.isArray(filterValue) || filterValue.length > 0)

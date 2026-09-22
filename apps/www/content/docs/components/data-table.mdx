@@ -50,7 +50,11 @@ const columns: DataTableColumnDef<Invoice>[] = [
     id: "status",
     accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" getColumnOptions={getColumnOptions} />
+      <DataTableColumnHeader
+        column={column}
+        title="Status"
+        getColumnOptions={getColumnOptions}
+      />
     ),
     meta: {
       label: "Status",
@@ -84,9 +88,12 @@ useDataTable({
   columns,
   mode: "server",
   rowCount: page.total,
-  sorting, onSortingChange,
-  columnFilters, onColumnFiltersChange,
-  pagination, onPaginationChange,
+  sorting,
+  onSortingChange,
+  columnFilters,
+  onColumnFiltersChange,
+  pagination,
+  onPaginationChange,
 })
 ```
 
@@ -97,7 +104,13 @@ as a link:
 ```tsx
 const urlState = useDataTableUrlState()
 const { data, rowCount } = useInvoicesQuery(urlState)
-const table = useDataTable({ data, columns, mode: "server", rowCount, ...urlState })
+const table = useDataTable({
+  data,
+  columns,
+  mode: "server",
+  rowCount,
+  ...urlState,
+})
 ```
 
 It needs a `<NuqsAdapter>` mounted once near the app root (`nuqs/adapters/next`
@@ -116,8 +129,17 @@ these 3" under server pagination.
   table={table}
   selection={selection}
   bulkActions={[
-    { label: "Archive", icon: <ArchiveIcon />, onAction: (sel) => archiveInvoices(sel) },
-    { label: "Delete", icon: <TrashIcon />, variant: "destructive", onAction: (sel) => deleteInvoices(sel) },
+    {
+      label: "Archive",
+      icon: <ArchiveIcon />,
+      onAction: (sel) => archiveInvoices(sel),
+    },
+    {
+      label: "Delete",
+      icon: <TrashIcon />,
+      variant: "destructive",
+      onAction: (sel) => deleteInvoices(sel),
+    },
   ]}
 />
 ```
@@ -140,7 +162,10 @@ The header (and the selection bar that replaces it) sticks to the viewport,
 ```tsx
 import { rowsToCsv, downloadCsv } from "@/lib/data-table/csv-export"
 
-<DataTable table={table} onExport={() => downloadCsv(rowsToCsv(table, table.getRowModel().rows))} />
+;<DataTable
+  table={table}
+  onExport={() => downloadCsv(rowsToCsv(table, table.getRowModel().rows))}
+/>
 ```
 
 In server mode there is no full filtered dataset on the client to serialize -

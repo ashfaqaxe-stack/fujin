@@ -24,20 +24,20 @@ feed **one shared filter state**, not two parallel systems.
 
 ## 2. Decisions
 
-| # | Question | Decision | Why |
-|---|---|---|---|
-| 1 | Sequencing against missing Phase 1 primitives | Build only the ~9 primitives data-table needs, then data-table | Only `spinner`/`button`/`input`/`field` exist. Building the full Phase 1 list first would delay the flagship for no benefit; building throwaway local pieces risks rework when the real primitives land |
-| 2 | Data-fetching model | Server-driven by default (`mode: "server"`), with a client-only escape hatch (`mode: "client"`) | Matches how Shopify/GitHub actually scale; TanStack Table's `manualSorting/Filtering/Pagination` map directly onto this |
-| 3 | Filter entry points | Unified — header-click and search-bar picks write the same filter state, rendered as the same pills | One mental model; avoids "two places to check what's filtered" |
-| 4 | Bulk selection scope | Full cross-page selection with a "select all N matching" banner | Required for the selection descriptor to mean anything once data is server-paginated |
-| 5 | Column feature scope for v1 | Visibility only (dropdown-menu show/hide). Pinning, resizing, reordering, grouping deferred | Keeps v1 buildable; each deferred feature has its own WCAG 2.5.7 (no drag-only) and API design work that shouldn't block the core table |
-| 6 | Saved views / tabs | Out of scope for v1 | Not in the original brief; filter-state shape must not preclude adding it later, but nothing is built now |
-| 7 | CSV export | Included in v1 | Small addition once the selection descriptor and bulk-action bar exist |
-| 8 | Filter value types | Text / single-select / multi-select from unique values, date range, numeric range, boolean | Covers every filter type both reference systems actually use |
-| 9 | Sticky header | Sticky to the **viewport**, offset configurable (`stickyOffset` prop / CSS var), not just the table's internal scroll container | This is the specific behaviour called out from Shopify — header and action bar stay visible while the page scrolls, not just while the table scrolls |
-| 10 | Bulk-action inline count | Fixed at 2 inline actions, rest in a "⋯" overflow menu | Matches Shopify's density; no configurable prop since there's no requirement driving one |
-| 11 | Virtualization | Opt-in (`virtualized` prop), off by default | Keeps DOM simple/inspectable for typical admin-table row counts; avoids virtualization's sticky-header/find-in-page interaction complexity until actually needed |
-| 12 | Next.js vs React split | One framework-agnostic `data-table` (`frameworks: ["react", "next"]`); data-fetching glue (Server Action vs TanStack Query) lives only in `examples/`, not as a second registry item | The component itself has no server dependency; only the demo of wiring it up differs per framework |
+| #   | Question                                      | Decision                                                                                                                                                                             | Why                                                                                                                                                                                                     |
+| --- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Sequencing against missing Phase 1 primitives | Build only the ~9 primitives data-table needs, then data-table                                                                                                                       | Only `spinner`/`button`/`input`/`field` exist. Building the full Phase 1 list first would delay the flagship for no benefit; building throwaway local pieces risks rework when the real primitives land |
+| 2   | Data-fetching model                           | Server-driven by default (`mode: "server"`), with a client-only escape hatch (`mode: "client"`)                                                                                      | Matches how Shopify/GitHub actually scale; TanStack Table's `manualSorting/Filtering/Pagination` map directly onto this                                                                                 |
+| 3   | Filter entry points                           | Unified — header-click and search-bar picks write the same filter state, rendered as the same pills                                                                                  | One mental model; avoids "two places to check what's filtered"                                                                                                                                          |
+| 4   | Bulk selection scope                          | Full cross-page selection with a "select all N matching" banner                                                                                                                      | Required for the selection descriptor to mean anything once data is server-paginated                                                                                                                    |
+| 5   | Column feature scope for v1                   | Visibility only (dropdown-menu show/hide). Pinning, resizing, reordering, grouping deferred                                                                                          | Keeps v1 buildable; each deferred feature has its own WCAG 2.5.7 (no drag-only) and API design work that shouldn't block the core table                                                                 |
+| 6   | Saved views / tabs                            | Out of scope for v1                                                                                                                                                                  | Not in the original brief; filter-state shape must not preclude adding it later, but nothing is built now                                                                                               |
+| 7   | CSV export                                    | Included in v1                                                                                                                                                                       | Small addition once the selection descriptor and bulk-action bar exist                                                                                                                                  |
+| 8   | Filter value types                            | Text / single-select / multi-select from unique values, date range, numeric range, boolean                                                                                           | Covers every filter type both reference systems actually use                                                                                                                                            |
+| 9   | Sticky header                                 | Sticky to the **viewport**, offset configurable (`stickyOffset` prop / CSS var), not just the table's internal scroll container                                                      | This is the specific behaviour called out from Shopify — header and action bar stay visible while the page scrolls, not just while the table scrolls                                                    |
+| 10  | Bulk-action inline count                      | Fixed at 2 inline actions, rest in a "⋯" overflow menu                                                                                                                               | Matches Shopify's density; no configurable prop since there's no requirement driving one                                                                                                                |
+| 11  | Virtualization                                | Opt-in (`virtualized` prop), off by default                                                                                                                                          | Keeps DOM simple/inspectable for typical admin-table row counts; avoids virtualization's sticky-header/find-in-page interaction complexity until actually needed                                        |
+| 12  | Next.js vs React split                        | One framework-agnostic `data-table` (`frameworks: ["react", "next"]`); data-fetching glue (Server Action vs TanStack Query) lives only in `examples/`, not as a second registry item | The component itself has no server dependency; only the demo of wiring it up differs per framework                                                                                                      |
 
 ## 3. Prerequisite primitives
 
@@ -48,17 +48,17 @@ skeleton needs them immediately), `command` next (it's the biggest lift —
 wraps `@base-ui/react/autocomplete` for the search-bar combobox), the rest in
 any order.
 
-| Primitive | Base UI part | Why data-table needs it |
-|---|---|---|
-| `table` | none (semantic HTML) | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell` — the raw parts data-table's markup composes |
-| `checkbox` | `@base-ui/react/checkbox` | Row selection, multi-select filter value lists |
-| `popover` | `@base-ui/react/popover` | Filter value pickers, per-column header filter popover |
-| `command` | `@base-ui/react/autocomplete` | The search-bar combobox: type-ahead column picker → value picker, keyboard nav |
-| `dropdown-menu` | `@base-ui/react/menu` | Column visibility toggle, bulk-action overflow, per-row action menu |
-| `badge` | none (styled span) | Filter pills, selection count |
-| `tooltip` | `@base-ui/react/tooltip` | Icon-only header buttons (sort, overflow) |
-| `separator` | `@base-ui/react/separator` | Toolbar dividers |
-| `skeleton` | none (styled div) | Loading-state rows |
+| Primitive       | Base UI part                  | Why data-table needs it                                                                                                |
+| --------------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `table`         | none (semantic HTML)          | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell` — the raw parts data-table's markup composes |
+| `checkbox`      | `@base-ui/react/checkbox`     | Row selection, multi-select filter value lists                                                                         |
+| `popover`       | `@base-ui/react/popover`      | Filter value pickers, per-column header filter popover                                                                 |
+| `command`       | `@base-ui/react/autocomplete` | The search-bar combobox: type-ahead column picker → value picker, keyboard nav                                         |
+| `dropdown-menu` | `@base-ui/react/menu`         | Column visibility toggle, bulk-action overflow, per-row action menu                                                    |
+| `badge`         | none (styled span)            | Filter pills, selection count                                                                                          |
+| `tooltip`       | `@base-ui/react/tooltip`      | Icon-only header buttons (sort, overflow)                                                                              |
+| `separator`     | `@base-ui/react/separator`    | Toolbar dividers                                                                                                       |
+| `skeleton`      | none (styled div)             | Loading-state rows                                                                                                     |
 
 Page-size selection reuses `dropdown-menu` rather than adding a `select`
 primitive — no need to pull that in for one control.
@@ -107,13 +107,18 @@ correct at any page size.
 
 ```ts
 useDataTable({
-  data, columns,
-  mode: "server" | "client",   // default "server"
-  rowCount,                    // required in server mode
-  sorting, onSortingChange,
-  filters, onFiltersChange,
-  pagination, onPaginationChange,
-  search, onSearchChange,
+  data,
+  columns,
+  mode: "server" | "client", // default "server"
+  rowCount, // required in server mode
+  sorting,
+  onSortingChange,
+  filters,
+  onFiltersChange,
+  pagination,
+  onPaginationChange,
+  search,
+  onSearchChange,
 })
 ```
 

@@ -4,7 +4,10 @@ import * as React from "react"
 import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "lucide-react"
 
 import type { FilterableColumn } from "@/registry/fujin/lib/data-table/use-data-table-filters"
-import type { ActiveFilter, FilterOption } from "@/registry/fujin/lib/data-table/types"
+import type {
+  ActiveFilter,
+  FilterOption,
+} from "@/registry/fujin/lib/data-table/types"
 import { cn } from "@/registry/fujin/lib/utils"
 import {
   Command,
@@ -22,7 +25,10 @@ type PickerItem =
 export type DataTableFilterComboboxProps = {
   /** Filterable columns that don't already have an active pill. */
   columns: FilterableColumn[]
-  getColumnOptions: (columnId: string, query?: string) => Promise<FilterOption[]>
+  getColumnOptions: (
+    columnId: string,
+    query?: string
+  ) => Promise<FilterOption[]>
   setFilterValue: (
     columnId: string,
     value: ActiveFilter["value"] | undefined

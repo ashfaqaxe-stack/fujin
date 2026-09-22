@@ -9,7 +9,12 @@ import {
 
 const invoices = [
   { id: "INV001", status: "Paid", method: "Card", amount: "$250.00" },
-  { id: "INV002", status: "Pending", method: "Bank transfer", amount: "$150.00" },
+  {
+    id: "INV002",
+    status: "Pending",
+    method: "Bank transfer",
+    amount: "$150.00",
+  },
   { id: "INV003", status: "Overdue", method: "Card", amount: "$350.00" },
 ]
 

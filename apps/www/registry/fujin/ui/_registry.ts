@@ -478,9 +478,14 @@ export const ui: RegistryItemInput[] = [
         ],
         a11y: [
           "Focus ring is solid to meet the 3:1 non-text contrast requirement (WCAG 1.4.11).",
-          "Renders `aria-checked=\"mixed\"` automatically while `indeterminate`.",
+          'Renders `aria-checked="mixed"` automatically while `indeterminate`.',
         ],
-        tokens: ["--primary", "--primary-foreground", "--ring", "--destructive"],
+        tokens: [
+          "--primary",
+          "--primary-foreground",
+          "--ring",
+          "--destructive",
+        ],
         related: ["field", "data-table", "radio-group"],
       },
     },
@@ -498,11 +503,9 @@ export const ui: RegistryItemInput[] = [
       links: { api: "https://base-ui.com/react/components/separator" },
       fujin: {
         summary: "A horizontal or vertical rule with the correct ARIA role.",
-        whenToUse: [
-          "Dividing sections of a page, a toolbar, or menu groups.",
-        ],
+        whenToUse: ["Dividing sections of a page, a toolbar, or menu groups."],
         whenNotToUse: [
-          "Purely decorative spacing - use margin/gap; a separator announces `role=\"separator\"` to screen readers.",
+          'Purely decorative spacing - use margin/gap; a separator announces `role="separator"` to screen readers.',
         ],
         props: [
           {
@@ -522,7 +525,9 @@ export const ui: RegistryItemInput[] = [
 </div>`,
           },
         ],
-        a11y: ["Renders with `role=\"separator\"` and the correct `aria-orientation`."],
+        a11y: [
+          'Renders with `role="separator"` and the correct `aria-orientation`.',
+        ],
         related: ["dropdown-menu", "command"],
       },
     },
@@ -531,14 +536,16 @@ export const ui: RegistryItemInput[] = [
     name: "skeleton",
     type: "registry:ui",
     title: "Skeleton",
-    description: "A pulsing placeholder that mirrors the shape of loading content.",
+    description:
+      "A pulsing placeholder that mirrors the shape of loading content.",
     categories: ["primitives", "feedback"],
     dependencies: [],
     registryDependencies: ["@fujin/utils"],
     files: [{ path: "registry/fujin/ui/skeleton.tsx", type: "registry:ui" }],
     meta: {
       fujin: {
-        summary: "A `div` with a pulse animation, sized to match the content it stands in for.",
+        summary:
+          "A `div` with a pulse animation, sized to match the content it stands in for.",
         whenToUse: [
           "Content with a known shape is loading - rows in `data-table`, cards, avatars.",
         ],
@@ -556,7 +563,7 @@ export const ui: RegistryItemInput[] = [
           },
         ],
         a11y: [
-          "Purely visual - wrap the loading region in `aria-busy` and a `role=\"status\"` announcement (or use `spinner`/`data-table`'s loading state, which does this).",
+          'Purely visual - wrap the loading region in `aria-busy` and a `role="status"` announcement (or use `spinner`/`data-table`\'s loading state, which does this).',
           "Honours `prefers-reduced-motion` by disabling the pulse.",
         ],
         tokens: ["--accent"],
@@ -783,7 +790,8 @@ export const ui: RegistryItemInput[] = [
             name: "variant",
             type: '"default" | "destructive"',
             default: '"default"',
-            description: "Destructive tints the item red for delete-style actions.",
+            description:
+              "Destructive tints the item red for delete-style actions.",
           },
         ],
         examples: [

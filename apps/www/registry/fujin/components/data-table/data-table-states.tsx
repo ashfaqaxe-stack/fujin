@@ -16,7 +16,10 @@ function DataTableEmptyState({
 }: DataTableEmptyStateProps) {
   return (
     <TableRow className="hover:bg-transparent">
-      <TableCell colSpan={colSpan} className="h-32 text-center whitespace-normal">
+      <TableCell
+        colSpan={colSpan}
+        className="h-32 text-center whitespace-normal"
+      >
         <div className="flex flex-col items-center gap-1 text-muted-foreground">
           <InboxIcon className="size-6" />
           <span className="font-medium text-foreground">{title}</span>
@@ -40,7 +43,10 @@ function DataTableErrorState({
 }: DataTableErrorStateProps) {
   return (
     <TableRow className="hover:bg-transparent">
-      <TableCell colSpan={colSpan} className="h-32 text-center whitespace-normal">
+      <TableCell
+        colSpan={colSpan}
+        className="h-32 text-center whitespace-normal"
+      >
         <div className="flex flex-col items-center gap-2 text-muted-foreground">
           <AlertCircleIcon className="size-6 text-destructive" />
           <span className="font-medium text-foreground">{message}</span>

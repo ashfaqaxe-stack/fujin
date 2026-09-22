@@ -18,7 +18,11 @@ import {
   CommandTrigger,
 } from "@/registry/fujin/ui/command"
 import { Input } from "@/registry/fujin/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/registry/fujin/ui/popover"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/registry/fujin/ui/popover"
 
 export type DataTableColumnFilterPopoverProps = {
   label: string
@@ -179,7 +183,9 @@ function DataTableColumnFilterPopover({
       open={open}
       onOpenChange={onOpenChange}
       onValueChange={(values: FilterOption[]) =>
-        onValueChange(values.length ? values.map((option) => option.value) : undefined)
+        onValueChange(
+          values.length ? values.map((option) => option.value) : undefined
+        )
       }
     >
       <CommandTrigger

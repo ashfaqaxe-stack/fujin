@@ -1,6 +1,11 @@
 "use client"
 
-import { parseAsInteger, parseAsJson, parseAsString, useQueryStates } from "nuqs"
+import {
+  parseAsInteger,
+  parseAsJson,
+  parseAsString,
+  useQueryStates,
+} from "nuqs"
 
 import type { ColumnFiltersState, PaginationState, SortingState } from "./types"
 

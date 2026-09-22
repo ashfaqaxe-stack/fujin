@@ -38,7 +38,10 @@ import {
 ## Column visibility
 
 ```tsx
-<DropdownMenuCheckboxItem checked={column.getIsVisible()} onCheckedChange={column.toggleVisibility}>
+<DropdownMenuCheckboxItem
+  checked={column.getIsVisible()}
+  onCheckedChange={column.toggleVisibility}
+>
   {column.label}
 </DropdownMenuCheckboxItem>
 ```

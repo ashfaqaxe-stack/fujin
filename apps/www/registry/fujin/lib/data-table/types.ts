@@ -33,12 +33,7 @@ export type FilterOption = {
  * `components/_registry.ts`.
  */
 export type FilterType =
-  | "text"
-  | "select"
-  | "multi-select"
-  | "date-range"
-  | "number-range"
-  | "boolean"
+  "text" | "select" | "multi-select" | "date-range" | "number-range" | "boolean"
 
 /**
  * Declared on a column's `meta.filter` to make it filterable from both the
@@ -68,9 +63,13 @@ export interface DataTableColumnMeta<TData extends RowData = any> {
 }
 
 declare module "@tanstack/table-core" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-object-type -- module augmentation, not a redundant supertype
-  interface ColumnMeta<TFeatures extends TableFeatures, TData extends RowData, TValue>
-    extends DataTableColumnMeta<TData> {}
+  /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-object-type -- module augmentation, not a redundant supertype; type params must match the augmented interface's arity */
+  interface ColumnMeta<
+    TFeatures extends TableFeatures,
+    TData extends RowData,
+    TValue,
+  > extends DataTableColumnMeta<TData> {}
+  /* eslint-enable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-object-type */
 }
 
 /** One active filter pill: a column id and the operator-specific value it holds. */
