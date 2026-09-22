@@ -125,7 +125,7 @@ apps/www                 docs site + registry host (Next.js 16, Fumadocs)
   public/r/              build output (gitignored)
 packages/schema          @fujin/schema - registry + MCP metadata schemas
 packages/mcp             @fujin/mcp - MCP server (stdio)
-packages/cli             @fujin/cli - create / init / add / list / info / mcp / doctor
+packages/cli             fujin - create / init / add / list / info / mcp / doctor
 templates/next           Next.js starter (installed via the real shadcn CLI)
 templates/react          Vite starter
 scripts/sync-templates.mjs

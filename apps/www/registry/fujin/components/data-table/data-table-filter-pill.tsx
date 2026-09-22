@@ -3,6 +3,7 @@
 import * as React from "react"
 import { ChevronDownIcon, XIcon } from "lucide-react"
 
+import { FILTER_TYPES_WITH_UI } from "@/registry/fujin/lib/data-table/features"
 import type {
   ActiveFilter,
   FilterOption,
@@ -21,11 +22,22 @@ export type DataTableFilterPillProps = {
     columnId: string,
     query?: string
   ) => Promise<FilterOption[]>
-  setFilterValue: (columnId: string, value: string[]) => void
+  setFilterValue: (
+    columnId: string,
+    value: ActiveFilter["value"] | undefined
+  ) => void
   onRemove: (columnId: string) => void
 }
 
-function summarize(value: ActiveFilter["value"]): string {
+function summarize(filter: ActiveFilter): string {
+  const { type, value } = filter
+  if (type === "number-range" && Array.isArray(value)) {
+    const [min, max] = value
+    if (min && max) return `${min} - ${max}`
+    if (min) return `≥ ${min}`
+    if (max) return `≤ ${max}`
+    return "Any"
+  }
   if (Array.isArray(value)) {
     if (value.length === 0) return "Any"
     if (value.length <= 2) return value.join(", ")
@@ -36,7 +48,11 @@ function summarize(value: ActiveFilter["value"]): string {
 
 /**
  * A Shopify-style filter pill: click it to reopen the same value-picker the
- * search bar used to create it, seeded with the values already chosen.
+ * search bar used to create it, seeded with the values already chosen. A
+ * filter type with no built-in editor (`boolean`/`date-range` - see
+ * `FILTER_TYPES_WITH_UI`) can still only reach this state via a caller
+ * driving `column.setFilterValue()` directly, so it renders as a plain,
+ * non-interactive summary - removable, but not editable from here.
  */
 function DataTableFilterPill({
   filter,
@@ -46,24 +62,40 @@ function DataTableFilterPill({
 }: DataTableFilterPillProps) {
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState("")
+  const isListType = filter.type === "select" || filter.type === "multi-select"
   const { options, loading } = useColumnFilterOptions(
     filter.columnId,
     query,
-    open,
+    open && isListType,
     getColumnOptions
   )
 
-  const selectedValues = Array.isArray(filter.value)
-    ? filter.value
-    : [String(filter.value)]
+  if (!FILTER_TYPES_WITH_UI.has(filter.type)) {
+    return (
+      <span
+        data-slot="data-table-filter-pill"
+        className={cn(
+          badgeVariants({ variant: "secondary" }),
+          "h-7 gap-1 rounded-r-none py-0 pr-2 pl-2"
+        )}
+      >
+        <span className="font-medium">{filter.label}</span>
+        <span className="text-muted-foreground">{summarize(filter)}</span>
+      </span>
+    )
+  }
 
   return (
     <DataTableColumnFilterPopover
       label={filter.label}
-      selectedValues={selectedValues}
-      onValuesChange={(values) => {
-        if (values.length === 0) onRemove(filter.columnId)
-        else setFilterValue(filter.columnId, values)
+      type={filter.type}
+      value={filter.value}
+      onValueChange={(value) => {
+        if (value == null || (Array.isArray(value) && value.length === 0)) {
+          onRemove(filter.columnId)
+        } else {
+          setFilterValue(filter.columnId, value)
+        }
       }}
       open={open}
       onOpenChange={setOpen}
@@ -77,7 +109,7 @@ function DataTableFilterPill({
       )}
     >
       <span className="font-medium">{filter.label}</span>
-      <span className="text-muted-foreground">{summarize(filter.value)}</span>
+      <span className="text-muted-foreground">{summarize(filter)}</span>
       <ChevronDownIcon className="size-3 text-muted-foreground" />
     </DataTableColumnFilterPopover>
   )
@@ -98,7 +130,7 @@ function DataTableFilterPillRemove({
       onClick={onRemove}
       className={cn(
         badgeVariants({ variant: "secondary" }),
-        "h-7 w-5 shrink-0 justify-center rounded-l-none border-l border-l-background/40 px-0 outline-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-ring dark:hover:bg-white/10"
+        "h-7 w-6 shrink-0 justify-center rounded-l-none border-l border-l-background/40 px-0 outline-none hover:bg-black/10 focus-visible:ring-2 focus-visible:ring-ring dark:hover:bg-white/10"
       )}
     >
       <XIcon className="size-3.5" />

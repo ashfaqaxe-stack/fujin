@@ -28,7 +28,10 @@ function DataTablePagination<TData extends RowData>({
   const to = Math.min((pageIndex + 1) * pageSize, rowCount)
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 border-t px-3 py-2 text-sm text-muted-foreground">
+    <div
+      data-slot="data-table-pagination"
+      className="flex flex-wrap items-center justify-between gap-3 border-t px-3 py-2 text-sm text-muted-foreground"
+    >
       <div className="flex items-center gap-2">
         <span>Rows per page</span>
         <DropdownMenu>

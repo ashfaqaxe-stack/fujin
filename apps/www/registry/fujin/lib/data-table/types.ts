@@ -21,6 +21,17 @@ export type FilterOption = {
   count?: number
 }
 
+/**
+ * Every declared filter shape (see docs/data-table-plan.md §4, decision 8).
+ * `filterFn` is wired automatically per type (`FILTER_FN_BY_TYPE` in
+ * `features.ts`) so this stays correct even for the two types below with no
+ * built-in control yet - only `text` | `select` | `multi-select` |
+ * `number-range` render from the search bar or a header popover
+ * (`FILTER_TYPES_WITH_UI`). `date-range` and `boolean` are reserved for a
+ * later release; a column declaring one is skipped by both entry points
+ * rather than shown with a broken control - see the pitfall in
+ * `components/_registry.ts`.
+ */
 export type FilterType =
   | "text"
   | "select"
@@ -37,11 +48,13 @@ export type FilterType =
 export type DataTableFilterConfig<TData extends RowData> = {
   type: FilterType
   /**
-   * Supplies the list of pickable values. Omit for `text`/`date-range`/
-   * `number-range`/`boolean`, where there is nothing to enumerate.
-   * In client mode, when a `select`/`multi-select` column has no
-   * `getOptions`, the unique values already loaded are used instead (via
-   * `column.getFacetedUniqueValues()`).
+   * Supplies the list of pickable values for `select`/`multi-select`. Omit
+   * for `text`/`number-range`, where there is nothing to enumerate. In
+   * client mode, when a `select`/`multi-select` column has no `getOptions`,
+   * the unique values already loaded are used instead (via
+   * `column.getFacetedUniqueValues()`); in server mode without `getOptions`
+   * the picker shows no values, since one page can't be trusted to
+   * enumerate every value across the full dataset.
    */
   getOptions?: (query: string) => FilterOption[] | Promise<FilterOption[]>
 }
@@ -55,7 +68,7 @@ export interface DataTableColumnMeta<TData extends RowData = any> {
 }
 
 declare module "@tanstack/table-core" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-object-type -- module augmentation, not a redundant supertype
   interface ColumnMeta<TFeatures extends TableFeatures, TData extends RowData, TValue>
     extends DataTableColumnMeta<TData> {}
 }
@@ -65,7 +78,10 @@ export type ActiveFilter = {
   columnId: string
   label: string
   type: FilterType
-  /** `string[]` for select/multi-select, `[min, max]` for ranges, `string` for text/boolean. */
+  /**
+   * `string[]` for `multi-select`, `string` for `select`/`text`/`boolean`,
+   * `[min, max]` (as raw input strings) for `number-range`/`date-range`.
+   */
   value: string[] | string | boolean
 }
 

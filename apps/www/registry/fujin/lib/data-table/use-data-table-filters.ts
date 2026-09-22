@@ -3,7 +3,7 @@
 import * as React from "react"
 import type { ReactTable, RowData } from "@tanstack/react-table"
 
-import type { DataTableFeatures } from "./features"
+import { FILTER_TYPES_WITH_UI, type DataTableFeatures } from "./features"
 import type { ActiveFilter, FilterOption, FilterType } from "./types"
 
 export type FilterableColumn = {
@@ -23,12 +23,17 @@ export function useDataTableFilters<TData extends RowData>(
   table: ReactTable<DataTableFeatures, TData>
 ) {
   const { columnFilters, globalFilter } = table.state
+  const manual = table.options.manualFiltering
 
   const filterableColumns: FilterableColumn[] = React.useMemo(
     () =>
       table
         .getAllLeafColumns()
-        .filter((column) => column.columnDef.meta?.filter)
+        .filter(
+          (column) =>
+            column.columnDef.meta?.filter &&
+            FILTER_TYPES_WITH_UI.has(column.columnDef.meta.filter.type)
+        )
         .map((column) => ({
           id: column.id,
           label: column.columnDef.meta?.label ?? column.id,
@@ -85,6 +90,7 @@ export function useDataTableFilters<TData extends RowData>(
       if (!column || !meta?.filter) return []
 
       if (meta.filter.getOptions) return meta.filter.getOptions(query)
+      if (manual) return []
 
       const unique = column.getFacetedUniqueValues()
       const normalizedQuery = query.toLowerCase()
@@ -96,7 +102,7 @@ export function useDataTableFilters<TData extends RowData>(
         }))
         .filter((option) => option.label.toLowerCase().includes(normalizedQuery))
     },
-    [table]
+    [table, manual]
   )
 
   return {

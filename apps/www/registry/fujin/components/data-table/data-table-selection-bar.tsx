@@ -57,6 +57,7 @@ function DataTableSelectionBar({
 
   return (
     <div
+      data-slot="data-table-selection-bar"
       className={cn(
         "flex h-10 items-center gap-3 border-b bg-accent px-2 text-sm",
         className

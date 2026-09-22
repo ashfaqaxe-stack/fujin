@@ -9,8 +9,14 @@ import {
 } from "lucide-react"
 import type { Column, RowData } from "@tanstack/react-table"
 
-import type { DataTableFeatures } from "@/registry/fujin/lib/data-table/features"
-import type { FilterOption } from "@/registry/fujin/lib/data-table/types"
+import {
+  FILTER_TYPES_WITH_UI,
+  type DataTableFeatures,
+} from "@/registry/fujin/lib/data-table/features"
+import type {
+  ActiveFilter,
+  FilterOption,
+} from "@/registry/fujin/lib/data-table/types"
 import { cn } from "@/registry/fujin/lib/utils"
 
 import {
@@ -50,24 +56,33 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
   const [query, setQuery] = React.useState("")
 
   const filterConfig = column.columnDef.meta?.filter
-  const canFilter = Boolean(filterConfig && getColumnOptions)
+  const canFilter = Boolean(
+    filterConfig &&
+      getColumnOptions &&
+      FILTER_TYPES_WITH_UI.has(filterConfig.type)
+  )
+  const isListType =
+    filterConfig?.type === "select" || filterConfig?.type === "multi-select"
   const { options, loading } = useColumnFilterOptions(
     column.id,
     query,
-    open && canFilter,
+    open && canFilter && isListType,
     getColumnOptions ?? (async () => [])
   )
 
-  const filterValue = column.getFilterValue()
-  const selectedValues = Array.isArray(filterValue)
-    ? (filterValue as string[])
-    : []
+  const filterValue = column.getFilterValue() as ActiveFilter["value"] | undefined
+  const hasActiveFilter =
+    filterValue != null &&
+    (!Array.isArray(filterValue) || filterValue.length > 0)
 
   const canSort = column.getCanSort()
   const sorted = column.getIsSorted()
 
   return (
-    <div className={cn("flex items-center gap-1", className)}>
+    <div
+      data-slot="data-table-column-header"
+      className={cn("flex items-center gap-1", className)}
+    >
       {canSort ? (
         <button
           type="button"
@@ -89,10 +104,9 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
       {canFilter ? (
         <DataTableColumnFilterPopover
           label={title}
-          selectedValues={selectedValues}
-          onValuesChange={(values) =>
-            column.setFilterValue(values.length ? values : undefined)
-          }
+          type={filterConfig!.type}
+          value={filterValue}
+          onValueChange={(value) => column.setFilterValue(value)}
           open={open}
           onOpenChange={setOpen}
           query={query}
@@ -101,7 +115,7 @@ function DataTableColumnHeader<TData extends RowData, TValue>({
           loading={loading}
           triggerClassName={cn(
             "flex size-6 items-center justify-center rounded-sm text-muted-foreground outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring",
-            selectedValues.length > 0 && "text-foreground"
+            hasActiveFilter && "text-foreground"
           )}
         >
           <FilterIcon className="size-3.5" />

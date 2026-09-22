@@ -96,7 +96,7 @@ export async function ensureRegistry(cwd: string) {
   const config = await readComponentsJson(cwd)
   if (!config) {
     throw new CliError(
-      "No components.json found. Run `npx @fujin/cli init` first."
+      "No components.json found. Run `npx fujin init` first."
     )
   }
   const url = `${REGISTRY_URL}/{name}.json`

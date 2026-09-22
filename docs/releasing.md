@@ -4,7 +4,7 @@ Fujin has two things to ship:
 
 1. **The site** (`apps/www`): docs plus the registry the CLI, MCP server and
    `shadcn add` read from (`/r/*.json`).
-2. **Three npm packages**: `@fujin/schema`, `@fujin/mcp`, `@fujin/cli`.
+2. **Three npm packages**: `@fujin/schema`, `@fujin/mcp`, `fujin`.
 
 Deploy the site first. The packages point at it.
 
@@ -101,7 +101,7 @@ re-run.
 
 ### Set up trusted publishing (once per package)
 
-On npmjs.com, for each of `@fujin/schema`, `@fujin/mcp`, `@fujin/cli`:
+On npmjs.com, for each of `@fujin/schema`, `@fujin/mcp`, `fujin`:
 **Settings → Trusted publishing → GitHub Actions**
 
 | Field                | Value             |

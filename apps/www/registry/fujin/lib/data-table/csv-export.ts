@@ -5,23 +5,25 @@ import type { SelectionDescriptor } from "./types"
 
 function toCsvValue(value: unknown): string {
   if (value == null) return ""
-  const text = String(value)
+  let text = String(value)
+  // Excel/Sheets treats a leading =, +, -, @, tab or CR as a formula trigger
+  // on open (CSV/formula injection) - neutralize it before quote-escaping.
+  if (/^[=+\-@\t\r]/.test(text)) text = `'${text}`
   return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text
 }
 
 /**
  * Client-mode export: `rows` are already-loaded `Row` objects, so this can
- * serialize them directly. Skips the `select` and `actions` display columns
- * data-table's own markup adds - every other visible column is exported
- * under its `meta.label` (falling back to the column id).
+ * serialize them directly. Every visible column is exported under its
+ * `meta.label` (falling back to the column id) - the select checkbox and
+ * row actions are rendered directly in data-table.tsx, never as columns, so
+ * there is nothing to filter out here.
  */
 export function rowsToCsv<TData extends RowData>(
   table: ReactTable<DataTableFeatures, TData>,
   rows: Row<DataTableFeatures, TData>[]
 ): string {
-  const columns = table
-    .getVisibleLeafColumns()
-    .filter((column) => column.id !== "select" && column.id !== "actions")
+  const columns = table.getVisibleLeafColumns()
 
   const header = columns
     .map((column) => toCsvValue(column.columnDef.meta?.label ?? column.id))

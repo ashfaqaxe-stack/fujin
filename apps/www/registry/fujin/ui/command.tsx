@@ -88,7 +88,7 @@ function CommandInput({
       <ComboboxPrimitive.Clear
         data-slot="command-clear"
         aria-label="Clear"
-        className="flex size-4 shrink-0 items-center justify-center rounded-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        className="-mr-1.5 flex size-6 shrink-0 items-center justify-center rounded-xs text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
       >
         <XIcon className="size-3.5" />
       </ComboboxPrimitive.Clear>

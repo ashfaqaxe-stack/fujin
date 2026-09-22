@@ -11,16 +11,16 @@ existing Fujin item over writing UI from scratch.
 ## Workflow
 
 1. **Find.** With the `fujin` MCP server: `search_items` ("table with
-   filters") or `list_items`. Without it: `npx @fujin/cli list`.
-2. **Learn.** `get_item <name>` (or `npx @fujin/cli info <name>`). Read
+   filters") or `list_items`. Without it: `npx fujin list`.
+2. **Learn.** `get_item <name>` (or `npx fujin info <name>`). Read
    "Do not use when" and "Pitfalls" before writing code.
-3. **Install.** `npx @fujin/cli add <name>`. This also installs registry
+3. **Install.** `npx fujin add <name>`. This also installs registry
    dependencies. Never hand-copy registry files.
 4. **Use.** Import from `@/components/ui/<name>`. Only read the source
    (`get_item_source`) if you must change behaviour.
 
 If `components.json` lacks `"@fujin"` under `registries`, run
-`npx @fujin/cli init`.
+`npx fujin init`.
 
 ## Rules that differ from shadcn/ui
 

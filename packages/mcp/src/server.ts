@@ -184,7 +184,7 @@ export function createServer(client = new RegistryClient()) {
       return text(
         [
           `${runner} shadcn@latest add ${keys.map((key) => `@fujin/${key}`).join(" ")}`,
-          `Requires "@fujin": "${client.baseUrl}/{name}.json" under "registries" in components.json (\`npx @fujin/cli init\` adds it).`,
+          `Requires "@fujin": "${client.baseUrl}/{name}.json" under "registries" in components.json (\`npx fujin init\` adds it).`,
         ].join("\n")
       )
     }

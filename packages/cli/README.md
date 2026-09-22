@@ -1,4 +1,4 @@
-# @fujin/cli
+# fujin
 
 Add production-ready [Fujin](https://fujin.dev) components, blocks and recipes
 to your React project. Fujin is a shadcn-compatible registry built on Base UI
@@ -8,20 +8,20 @@ and Tailwind CSS v4; the code is copied into your project, so you own it.
 
 ```bash
 # New app
-npx @fujin/cli create my-app --template next   # or --template react
+npx fujin create my-app --template next   # or --template react
 
 # Existing app (React 19 + Tailwind v4)
-npx @fujin/cli init
-npx @fujin/cli add button field
+npx fujin init
+npx fujin add button field
 
 # Explore
-npx @fujin/cli list --type ui
-npx @fujin/cli info field
+npx fujin list --type ui
+npx fujin info field
 
 # Agent setup (Claude Code, Cursor, VS Code)
-npx @fujin/cli mcp init --client claude
+npx fujin mcp init --client claude
 
-npx @fujin/cli doctor
+npx fujin doctor
 ```
 
 | Command          | What it does                                                                      |

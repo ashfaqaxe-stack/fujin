@@ -9,8 +9,8 @@ your project, so you can read and change all of it. Every item also ships
 structured guidance for coding agents over MCP.
 
 ```bash
-npx @fujin/cli create my-app --template next   # or --template react
-npx @fujin/cli add button field                # into an existing project
+npx fujin create my-app --template next   # or --template react
+npx fujin add button field                # into an existing project
 ```
 
 See [docs/plan.md](docs/plan.md) for the architecture, research and roadmap.
@@ -23,7 +23,7 @@ See [docs/plan.md](docs/plan.md) for the architecture, research and roadmap.
 | `apps/www/registry/fujin`           | Source of every component the registry ships        |
 | `packages/schema`                   | Registry and agent-metadata schemas                 |
 | `packages/mcp`                      | MCP server (`@fujin/mcp`)                           |
-| `packages/cli`                      | CLI (`@fujin/cli`)                                  |
+| `packages/cli`                      | CLI (`fujin`)                                  |
 | `templates/next`, `templates/react` | Starter apps                                        |
 
 ## Development

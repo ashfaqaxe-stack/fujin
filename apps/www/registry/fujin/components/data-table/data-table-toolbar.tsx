@@ -48,7 +48,10 @@ function DataTableToolbar<TData extends RowData>({
   )
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-2 p-2", className)}>
+    <div
+      data-slot="data-table-toolbar"
+      className={cn("flex flex-wrap items-center gap-2 p-2", className)}
+    >
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5 rounded-md border border-input bg-transparent p-1 shadow-xs focus-within:border-ring focus-within:ring-2 focus-within:ring-ring">
         {activeFilters.map((filter) => (
           <div key={filter.columnId} className="flex items-stretch">

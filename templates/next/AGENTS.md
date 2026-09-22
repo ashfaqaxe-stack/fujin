@@ -14,7 +14,7 @@ before writing framework code, and heed deprecation notices.
 1. **Check Fujin first.** Use the `fujin` MCP server: `search_items` or
    `list_items`, then `get_item` for the one you pick. Do not rebuild a table,
    form, dialog or auth screen that the registry already has.
-2. **Install, don't copy.** `npx @fujin/cli add <name>` (or
+2. **Install, don't copy.** `npx fujin add <name>` (or
    `npx shadcn@latest add @fujin/<name>`).
 3. **Only read source when you must change behaviour** (`get_item_source`).
 

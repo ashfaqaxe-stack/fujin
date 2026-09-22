@@ -32,7 +32,7 @@ export function App() {
         <h1 className="text-2xl font-semibold tracking-tight">Project ready</h1>
         <p className="text-sm text-muted-foreground">
           Add components with{" "}
-          <code className="font-mono">npx @fujin/cli add</code>. Press{" "}
+          <code className="font-mono">npx fujin add</code>. Press{" "}
           <kbd className="font-mono">d</kbd> to toggle dark mode.
         </p>
       </div>

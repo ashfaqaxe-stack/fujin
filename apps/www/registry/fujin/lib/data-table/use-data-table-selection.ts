@@ -30,10 +30,27 @@ export function useDataTableSelection({
   const isControlled = value !== undefined
   const selection = isControlled ? value : internal
 
+  // Mirrors the latest resolved selection so two toggles in the same event
+  // handler resolve against each other, not against the same stale
+  // render-time `selection` closure. Written by `set` itself (event-handler
+  // time) and mirrored from the latest render in an effect - never during
+  // render, which React refs must not be used for.
+  const selectionRef = React.useRef(selection)
+  React.useEffect(() => {
+    selectionRef.current = selection
+  }, [selection])
+
   const set = React.useCallback(
-    (next: SelectionDescriptor) => {
-      if (!isControlled) setInternal(next)
-      onChange?.(next)
+    (
+      next:
+        | SelectionDescriptor
+        | ((prev: SelectionDescriptor) => SelectionDescriptor)
+    ) => {
+      const resolved =
+        typeof next === "function" ? next(selectionRef.current) : next
+      selectionRef.current = resolved
+      if (!isControlled) setInternal(resolved)
+      onChange?.(resolved)
     },
     [isControlled, onChange]
   )
@@ -58,36 +75,38 @@ export function useDataTableSelection({
 
   const toggleRow = React.useCallback(
     (rowId: string, checked: boolean) => {
-      if (selection.type === "include") {
+      set((prev) => {
+        if (prev.type === "include") {
+          const ids = checked
+            ? [...new Set([...prev.ids, rowId])]
+            : prev.ids.filter((id) => id !== rowId)
+          return { type: "include", ids }
+        }
         const ids = checked
-          ? [...new Set([...selection.ids, rowId])]
-          : selection.ids.filter((id) => id !== rowId)
-        set({ type: "include", ids })
-      } else {
-        const ids = checked
-          ? selection.ids.filter((id) => id !== rowId)
-          : [...new Set([...selection.ids, rowId])]
-        set({ type: "exclude", ids, total: selection.total })
-      }
+          ? prev.ids.filter((id) => id !== rowId)
+          : [...new Set([...prev.ids, rowId])]
+        return { type: "exclude", ids, total: prev.total }
+      })
     },
-    [selection, set]
+    [set]
   )
 
   const togglePage = React.useCallback(
     (checked: boolean) => {
-      if (selection.type === "include") {
+      set((prev) => {
+        if (prev.type === "include") {
+          const ids = checked
+            ? [...new Set([...prev.ids, ...pageRowIds])]
+            : prev.ids.filter((id) => !pageRowIds.includes(id))
+          return { type: "include", ids }
+        }
         const ids = checked
-          ? [...new Set([...selection.ids, ...pageRowIds])]
-          : selection.ids.filter((id) => !pageRowIds.includes(id))
-        set({ type: "include", ids })
-      } else {
-        const ids = checked
-          ? selection.ids.filter((id) => !pageRowIds.includes(id))
-          : [...new Set([...selection.ids, ...pageRowIds])]
-        set({ type: "exclude", ids, total: selection.total })
-      }
+          ? prev.ids.filter((id) => !pageRowIds.includes(id))
+          : [...new Set([...prev.ids, ...pageRowIds])]
+        return { type: "exclude", ids, total: prev.total }
+      })
     },
-    [selection, pageRowIds, set]
+    [pageRowIds, set]
   )
 
   /** "Select all {total} items" - every row matching the filters, nothing excluded yet. */

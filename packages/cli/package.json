@@ -1,5 +1,5 @@
 {
-  "name": "@fujin/cli",
+  "name": "fujin",
   "version": "0.1.0",
   "description": "Add production-ready Fujin components, blocks and recipes to your project.",
   "keywords": [

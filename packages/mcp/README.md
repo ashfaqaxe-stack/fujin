@@ -8,7 +8,7 @@ examples, with source only on request.
 ## Setup
 
 ```bash
-npx @fujin/cli mcp init --client claude   # or cursor, vscode
+npx fujin mcp init --client claude   # or cursor, vscode
 ```
 
 or add it yourself:

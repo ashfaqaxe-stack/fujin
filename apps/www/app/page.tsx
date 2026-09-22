@@ -52,7 +52,7 @@ export default function HomePage() {
             </Link>
           </div>
           <pre className="rounded-lg border bg-muted/50 px-4 py-3 font-mono text-sm">
-            npx @fujin/cli@latest init
+            npx fujin@latest init
           </pre>
         </section>
         <section className="grid gap-4 sm:grid-cols-2">

@@ -1,15 +1,9 @@
 "use client"
 
 import * as React from "react"
-import {
-  functionalUpdate,
-  useTable,
-  type OnChangeFn,
-  type RowData,
-  type Updater,
-} from "@tanstack/react-table"
+import { useTable, type RowData } from "@tanstack/react-table"
 
-import { dataTableFeatures } from "./features"
+import { dataTableFeatures, FILTER_FN_BY_TYPE } from "./features"
 import type {
   ColumnFiltersState,
   DataTableColumnDef,
@@ -34,8 +28,19 @@ export type UseDataTableOptions<TData extends RowData> = {
    * lets TanStack Table do all three over the full `data` array.
    */
   mode?: DataTableMode
-  /** Required in `"server"` mode - the total row count across all pages. */
+  /**
+   * Total row count across all pages. Required in `"server"` mode: without
+   * it `table.getPageCount()` is `0` while rows still render, producing a
+   * footer that contradicts the visible table.
+   */
   rowCount?: number
+  /**
+   * Stable, globally-unique id per row. Required in `"server"` mode: without
+   * it TanStack Table falls back to the row's index within the current page,
+   * so every page reuses ids `"0"..."pageSize-1"` and cross-page selection
+   * (the "select all N" descriptor) silently corrupts - selecting row 0 on
+   * one page appears to select row 0 on every other page too.
+   */
   getRowId?: (row: TData, index: number) => string
 
   sorting?: SortingState
@@ -53,14 +58,6 @@ export type UseDataTableOptions<TData extends RowData> = {
 
   columnVisibility?: Record<string, boolean>
   onColumnVisibilityChange?: (visibility: Record<string, boolean>) => void
-}
-
-/** Adapts a (value, setter) pair to TanStack's `Updater`-accepting `on*Change` shape. */
-function toChangeHandler<T>(
-  current: T,
-  set: (next: T) => void
-): OnChangeFn<T> {
-  return (updater: Updater<T>) => set(functionalUpdate(updater, current))
 }
 
 export function useDataTable<TData extends RowData>({
@@ -107,12 +104,43 @@ export function useDataTable<TData extends RowData>({
     onColumnVisibilityChange
   )
 
+  // Wires each column's `filterFn` from its declared `meta.filter.type`, so
+  // an author never has to pick one by hand and can't mismatch it against
+  // the value shape the filter UI actually writes (see FILTER_FN_BY_TYPE).
+  // An explicit `filterFn` on the column definition always wins.
+  const resolvedColumns = React.useMemo(
+    () =>
+      columns.map((column) => {
+        const type = column.meta?.filter?.type
+        if (!type || column.filterFn) return column
+        return { ...column, filterFn: FILTER_FN_BY_TYPE[type] }
+      }),
+    [columns]
+  )
+
   const manual = mode === "server"
+
+  if (process.env.NODE_ENV !== "production" && manual) {
+    if (!getRowId) {
+      console.warn(
+        "useDataTable: `getRowId` is required in `mode: \"server\"` - " +
+          "without it, row ids fall back to their index within the current " +
+          "page, and cross-page selection will silently corrupt."
+      )
+    }
+    if (rowCount == null) {
+      console.warn(
+        "useDataTable: `rowCount` is required in `mode: \"server\"` - " +
+          "without it, the pagination footer will show 0 pages while rows " +
+          "still render."
+      )
+    }
+  }
 
   const table = useTable({
     features: dataTableFeatures,
     data,
-    columns,
+    columns: resolvedColumns,
     getRowId,
     state: {
       sorting,
@@ -121,20 +149,17 @@ export function useDataTable<TData extends RowData>({
       pagination,
       columnVisibility,
     },
-    onSortingChange: toChangeHandler(sorting, setSorting),
-    onColumnFiltersChange: toChangeHandler(columnFilters, setColumnFilters),
-    onGlobalFilterChange: toChangeHandler(globalFilter, setGlobalFilter),
-    onPaginationChange: toChangeHandler(pagination, setPagination),
-    onColumnVisibilityChange: toChangeHandler(
-      columnVisibility,
-      setColumnVisibility
-    ),
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    onPaginationChange: setPagination,
+    onColumnVisibilityChange: setColumnVisibility,
     enableMultiSort,
     globalFilterFn: "includesString",
     manualSorting: manual,
     manualFiltering: manual,
     manualPagination: manual,
-    rowCount: manual ? (rowCount ?? 0) : undefined,
+    rowCount: manual ? rowCount : undefined,
   })
 
   return table

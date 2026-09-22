@@ -88,7 +88,7 @@ export async function create(
     cd ${name}
     ${options.install ? "" : `${manager} install\n    `}${manager} run dev
 
-  ${pc.dim("Add components:")}  npx @fujin/cli add button field
+  ${pc.dim("Add components:")}  npx fujin add button field
 `)
 }
 
@@ -100,7 +100,7 @@ export async function init(cwd: string, options: { yes: boolean }) {
   const pkg = await readPackageJson(cwd)
   if (!pkg) {
     throw new CliError(
-      "No package.json here. To start a new app run `npx @fujin/cli create my-app`."
+      "No package.json here. To start a new app run `npx fujin create my-app`."
     )
   }
 
@@ -130,8 +130,8 @@ export async function init(cwd: string, options: { yes: boolean }) {
 
   logger.success("Fujin is ready.")
   logger.info(`
-  ${pc.dim("Add components:")}  npx @fujin/cli add button field
-  ${pc.dim("Agent setup:")}     npx @fujin/cli mcp init
+  ${pc.dim("Add components:")}  npx fujin add button field
+  ${pc.dim("Agent setup:")}     npx fujin mcp init
 `)
 }
 
@@ -376,13 +376,13 @@ export async function doctor(cwd: string) {
 
   const config = await readComponentsJson(cwd)
   if (!config) {
-    problems.push("No components.json. Run `npx @fujin/cli init`.")
+    problems.push("No components.json. Run `npx fujin init`.")
   } else {
     ok("components.json")
     const registry = config.registries?.["@fujin"]
     if (!registry)
       problems.push(
-        "The @fujin registry is not configured. Run `npx @fujin/cli init`."
+        "The @fujin registry is not configured. Run `npx fujin init`."
       )
     else
       ok(`@fujin -> ${typeof registry === "string" ? registry : registry.url}`)

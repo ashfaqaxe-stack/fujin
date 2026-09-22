@@ -20,6 +20,7 @@ import {
   DataTableSelectionBar,
   type DataTableBulkAction,
 } from "./data-table-selection-bar"
+import { DataTablePagination } from "./data-table-pagination"
 import {
   DataTableEmptyState,
   DataTableErrorState,
@@ -45,6 +46,9 @@ export type DataTableProps<TData extends RowData> = {
   loading?: boolean
   error?: { message?: string; onRetry?: () => void } | null
   emptyState?: { title?: string; description?: string }
+  /** Set to `false` to render without the pagination footer entirely. */
+  pagination?: boolean
+  pageSizeOptions?: number[]
   className?: string
 }
 
@@ -64,6 +68,8 @@ function DataTable<TData extends RowData>({
   loading = false,
   error = null,
   emptyState,
+  pagination = true,
+  pageSizeOptions,
   className,
 }: DataTableProps<TData>) {
   const rows = table.getRowModel().rows
@@ -78,7 +84,11 @@ function DataTable<TData extends RowData>({
   } as React.CSSProperties
 
   return (
-    <div className={cn("rounded-md border", className)} style={style}>
+    <div
+      data-slot="data-table"
+      className={cn("rounded-md border", className)}
+      style={style}
+    >
       <DataTableToolbar table={table} onExport={onExport} exporting={exporting} />
       <Table>
         <TableHeader sticky>
@@ -187,6 +197,9 @@ function DataTable<TData extends RowData>({
           )}
         </TableBody>
       </Table>
+      {pagination ? (
+        <DataTablePagination table={table} pageSizeOptions={pageSizeOptions} />
+      ) : null}
     </div>
   )
 }
