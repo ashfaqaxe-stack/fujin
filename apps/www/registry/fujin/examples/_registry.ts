@@ -134,4 +134,26 @@ export const examples: RegistryItemInput[] = [
       },
     ],
   },
+  {
+    name: "otp-field-demo",
+    type: "registry:example",
+    registryDependencies: ["otp-field"],
+    files: [
+      {
+        path: "registry/fujin/examples/otp-field-demo.tsx",
+        type: "registry:example",
+      },
+    ],
+  },
+  {
+    name: "otp-verify-card-demo",
+    type: "registry:example",
+    registryDependencies: ["otp-verify-card", "button"],
+    files: [
+      {
+        path: "registry/fujin/examples/otp-verify-card-demo.tsx",
+        type: "registry:example",
+      },
+    ],
+  },
 ]

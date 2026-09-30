@@ -53,4 +53,12 @@ export const Index: Record<
     name: "data-table-demo",
     component: React.lazy(() => import("@/registry/fujin/examples/data-table-demo")),
   },
+  "otp-field-demo": {
+    name: "otp-field-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/otp-field-demo")),
+  },
+  "otp-verify-card-demo": {
+    name: "otp-verify-card-demo",
+    component: React.lazy(() => import("@/registry/fujin/examples/otp-verify-card-demo")),
+  },
 }

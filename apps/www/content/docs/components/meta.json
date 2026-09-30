@@ -5,6 +5,7 @@
     "button",
     "field",
     "input",
+    "otp-field",
     "spinner",
     "table",
     "checkbox",

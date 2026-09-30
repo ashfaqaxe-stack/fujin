@@ -1,0 +1,74 @@
+---
+title: OTP Field
+description: A one-time-code input with one real input per character. Full-code paste and SMS autofill work.
+component: otp-field
+status: new
+links:
+  api: https://base-ui.com/react/components/otp-field
+---
+
+<ComponentPreview name="otp-field-demo" />
+
+## Installation
+
+```package-install
+npx shadcn@latest add @fujin/otp-field
+```
+
+## Usage
+
+```tsx
+import {
+  OTPField,
+  OTPFieldGroup,
+  OTPFieldInput,
+  OTPFieldSeparator,
+} from "@/components/ui/otp-field"
+```
+
+```tsx
+<label htmlFor="code">Verification code</label>
+<OTPField id="code" length={4} onValueComplete={verify}>
+  <OTPFieldInput />
+  <OTPFieldInput aria-label="Character 2 of 4" />
+  <OTPFieldInput aria-label="Character 3 of 4" />
+  <OTPFieldInput aria-label="Character 4 of 4" />
+</OTPField>
+```
+
+Want loading, success, error and resend handled for you? Use the
+[OTP Verify Card](/docs/blocks/otp-verify-card) block.
+
+## What's different from shadcn/ui
+
+- **Built on Base UI's OTPField**, not the `input-otp` package. Every slot is a
+  real `<input>`, so the caret is native and there is no invisible overlay.
+- **Paste and autofill.** Pasting a full code into any slot fills them all; the
+  first slot carries `autocomplete="one-time-code"`.
+- **Groups are optional.** Slots inside `OTPFieldGroup` are joined like
+  shadcn's `InputOTPGroup`; slots outside a group are separate boxes.
+- **40px slots with a solid focus ring** (WCAG 2.5.8 and 1.4.11).
+
+## API Reference
+
+<TypeTable
+  type={{
+    length: { type: "number", description: "Number of slots. Required." },
+    validationType: {
+      type: '"numeric" | "alpha" | "alphanumeric" | "none"',
+      default: '"numeric"',
+    },
+    onValueComplete: {
+      type: "(value: string) => void",
+      description: "Fires when every slot is filled.",
+    },
+    autoSubmit: {
+      type: "boolean",
+      default: "false",
+      description: "Submit the owning form when complete.",
+    },
+    mask: { type: "boolean", default: "false" },
+  }}
+/>
+
+Every other prop is forwarded to the Base UI [OTP Field](https://base-ui.com/react/components/otp-field).

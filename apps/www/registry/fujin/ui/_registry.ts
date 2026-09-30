@@ -955,4 +955,124 @@ export const ui: RegistryItemInput[] = [
       },
     },
   },
+  {
+    name: "otp-field",
+    type: "registry:ui",
+    title: "OTP Field",
+    description:
+      "A one-time-code input with one real <input> per character. Full-code paste and SMS autofill work.",
+    categories: ["primitives", "forms"],
+    dependencies: ["@base-ui/react", "lucide-react"],
+    registryDependencies: ["@fujin/utils"],
+    files: [{ path: "registry/fujin/ui/otp-field.tsx", type: "registry:ui" }],
+    meta: {
+      links: {
+        doc: "/docs/components/otp-field",
+        api: "https://base-ui.com/react/components/otp-field",
+      },
+      fujin: {
+        summary:
+          "Segmented one-time-code input on Base UI's OTPField: real inputs, paste and autofill, optional joined groups.",
+        whenToUse: [
+          "Entering a short verification, 2FA or invite code (4-8 characters).",
+          "You want to build your own verify screen around the bare field.",
+        ],
+        whenNotToUse: [
+          "You want a finished verify screen with loading, success, error and resend - use the `otp-verify-card` block.",
+          "Long or free-form codes (recovery keys, licence keys) - use `input`; per-character slots get tedious past ~8.",
+          "Passwords or PINs that must never be visible - still usable with `mask`, but consider `input type=password`.",
+        ],
+        anatomy: `<OTPField length={6} id="code">
+  <OTPFieldGroup>
+    <OTPFieldInput />
+    <OTPFieldInput aria-label="Character 2 of 6" />
+  </OTPFieldGroup>
+  <OTPFieldSeparator />
+  ...
+</OTPField>`,
+        props: [
+          {
+            owner: "OTPField",
+            name: "length",
+            type: "number",
+            required: true,
+            description:
+              "Number of slots. Render exactly this many `OTPFieldInput`s.",
+          },
+          {
+            owner: "OTPField",
+            name: "validationType",
+            type: '"numeric" | "alpha" | "alphanumeric" | "none"',
+            default: '"numeric"',
+            description:
+              "Characters accepted; also sets the mobile keyboard via `inputMode`.",
+          },
+          {
+            owner: "OTPField",
+            name: "value / defaultValue / onValueChange",
+            type: "string",
+            description: "Controlled or uncontrolled code.",
+          },
+          {
+            owner: "OTPField",
+            name: "onValueComplete",
+            type: "(value: string) => void",
+            description:
+              "Fires once every slot is filled, including by paste or autofill.",
+          },
+          {
+            owner: "OTPField",
+            name: "autoSubmit",
+            type: "boolean",
+            default: "false",
+            description: "Submits the owning `<form>` when complete.",
+          },
+          {
+            owner: "OTPField",
+            name: "mask",
+            type: "boolean",
+            default: "false",
+            description: "Hides entered characters.",
+          },
+          {
+            owner: "OTPFieldGroup",
+            name: "children",
+            type: "OTPFieldInput[]",
+            description:
+              "Joins its slots into one bordered group, like shadcn's InputOTPGroup.",
+          },
+        ],
+        examples: [
+          {
+            title: "Six digits in two groups",
+            code: `<label htmlFor="code">Verification code</label>
+<OTPField id="code" length={6} onValueComplete={verify}>
+  <OTPFieldGroup>
+    <OTPFieldInput />
+    <OTPFieldInput aria-label="Character 2 of 6" />
+    <OTPFieldInput aria-label="Character 3 of 6" />
+  </OTPFieldGroup>
+  <OTPFieldSeparator />
+  <OTPFieldGroup>
+    <OTPFieldInput aria-label="Character 4 of 6" />
+    <OTPFieldInput aria-label="Character 5 of 6" />
+    <OTPFieldInput aria-label="Character 6 of 6" />
+  </OTPFieldGroup>
+</OTPField>`,
+          },
+        ],
+        pitfalls: [
+          "The number of `OTPFieldInput` children must equal `length`.",
+          "The `id` on `OTPField` goes to the first input, so `<label htmlFor>` must match it. Slots after the first need their own `aria-label`.",
+          "shadcn's `InputOTP`/`InputOTPSlot` API (input-otp package) does not apply - there is no `maxLength` or `index` prop.",
+        ],
+        a11y: [
+          'The first slot gets `autocomplete="one-time-code"`, so SMS and password-manager autofill work (WCAG 3.3.8).',
+          "Pasting a full code into any slot fills every slot; paste is never blocked.",
+          "Slots are 40px with a solid focus ring (WCAG 2.5.8, 1.4.11).",
+        ],
+        related: ["otp-verify-card", "input", "field"],
+      },
+    },
+  },
 ]
